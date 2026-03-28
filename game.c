@@ -11,6 +11,7 @@
 
 float money = 4000;
 
+void mochila();
 void loja_armas();
 void loja_equip();
 void jornada();
@@ -26,20 +27,24 @@ int main()
     printf("----------------------------------\n");
 
     /*Options*/
-    printf("1. LOJA DE ARMAS\n");
-    printf("2. LOJA DE EQUIPAMENTOS\n");
-    printf("3. INICIAR JORNADA\n");
+    printf("1. Mochila\n");
+    printf("2. LOJA DE ARMAS\n");
+    printf("3. LOJA DE EQUIPAMENTOS\n");
+    printf("4. INICIAR JORNADA\n");
     scanf("%d", &op_escolha);
 
     switch(op_escolha)
     {
         case 1:
-            loja_armas();
+            mochila();
             break;
         case 2:
-            loja_equip();
+            loja_armas();
             break;
         case 3:
+            loja_equip();
+            break;
+        case 4:
             jornada();
             break;
         default:
@@ -50,6 +55,41 @@ int main()
 void money_verifier();
 void compra_cancelada();
 void op_buy();
+
+/* Items in the packpack*/
+void mochila()
+{
+    FILE *fptr; // pointer for guns.txt
+    FILE *eptr; // pointer for equip.txt
+
+    fptr = fopen("data/guns.txt", "r");
+    eptr = fopen("data/equip.txt", "r");
+
+    char guns_content[100]; // guns.txt content
+    char equip_content[100]; // equip.txt content
+
+    system("cls");
+    printf("MOCHILA\n\n");
+
+    
+    /*printing guns*/
+    printf("ARMAS:\n");
+    while(fgets(guns_content, sizeof(guns_content), fptr))
+    {
+        printf("%s", guns_content);
+    }
+    
+    /*printing equipments*/
+    printf("\n\nEQUIPAMENTOS\n");
+        while(fgets(equip_content, sizeof(equip_content), eptr))
+        {
+            printf("%s", equip_content);
+        }
+
+    fclose(fptr);
+    fclose(eptr);
+
+}
 
 void loja_armas()
 {
@@ -131,32 +171,41 @@ void loja_armas()
 
 void op_buy() // Buy options for every gun
 {
-    int buy_op = 0; // (s/n)
+    int buy_op = 0; // (y/n)
 
-    scanf("%d", &buy_op); // Getting the (s/n)
+    scanf("%d", &buy_op); // Getting the (y/n)
 
-        if(buy_op == 1)
-    {
-        printf("Voce comprou essa arma.\n");
-    }
-    else
+        if(buy_op == 2)
     {
         compra_cancelada();
+        main();
     }
 }
 
 /*Verify if the money is enought to buy*/
 void money_verifier(int gun)
 {
+    /*FILE * TO STORE THE PURCASHED GUNS*/
+    FILE *fptr;
+    fptr = fopen("data/guns.txt", "a");
+
     if (gun == 1)
     {
         int price = 1500;
-        if (money >= price)
+        if (money >= price) // Se o valor for menor ou igual ao dinheiro
         {
             money = money - price;
+
+            fprintf(fptr, "AK\n");
+            fclose(fptr);
+
             printf("compra realizada com sucesso.");
             sleep(2);
             main();
+        }
+        else // Caso nao tenha dinheiro suficiente
+        {
+            compra_cancelada();
         }
     }
 
@@ -166,9 +215,17 @@ void money_verifier(int gun)
         if (money >= price)
         {
             money = money - price;
+
+            fprintf(fptr, "SCAR\n");
+            fclose(fptr);
+
             printf("compra realizada com sucesso.");
             sleep(2);
             main();
+        }
+        else // Caso nao tenha dinheiro suficiente
+        {
+            compra_cancelada();
         }
     }
 
@@ -178,9 +235,17 @@ void money_verifier(int gun)
         if (money >= price)
         {
             money = money - price;
+
+            fprintf(fptr, "MP5\n");
+            fclose(fptr);
+
             printf("compra realizada com sucesso.");
             sleep(2);
             main();
+        }
+        else // Caso nao tenha dinheiro suficiente
+        {
+            compra_cancelada();
         }
     }
 
@@ -189,11 +254,20 @@ void money_verifier(int gun)
         if (money >= price)
         {
             money = money - price;
+
+            fprintf(fptr, "DESERT\n");
+            fclose(fptr);
+
             printf("compra realizada com sucesso.");
             sleep(2);
             main();
         }
+        else // Caso nao tenha dinheiro suficiente
+        {
+            compra_cancelada();
+        }
     }
+    fclose(fptr);
 }
 
 /*If the buy fail*/
