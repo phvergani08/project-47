@@ -53,6 +53,7 @@ int main()
 }
 
 void money_verifier();
+void equip_money_verifier();
 void compra_cancelada();
 void op_buy();
 
@@ -182,7 +183,7 @@ void op_buy() // Buy options for every gun
     }
 }
 
-/*Verify if the money is enought to buy*/
+/*Verify if the money is enought to buy guns*/
 void money_verifier(int gun)
 {
     /*FILE * TO STORE THE PURCASHED GUNS*/
@@ -270,6 +271,92 @@ void money_verifier(int gun)
     fclose(fptr);
 }
 
+void equip_money_verifier(int equip)
+{
+    /*FILE POINTER TO STORE EQUIPMENTS*/
+    FILE *fptr;
+
+    fptr = fopen("data/equip.txt", "a");
+
+    int price = 0; // base price
+    /*EQUIPMENTS*/
+    switch(equip)
+    {
+        case 1: //MIRA 2X
+            price = 2900;
+            if (money >= price)
+            {
+                money -= price; // money = money - price
+                fprintf(fptr, "MIRA 2X\n");
+                fclose(fptr);
+
+                printf("compra realizada com sucesso.");
+                sleep(2);
+                main();
+            }
+            else // Caso nao tenha dinheiro suficiente
+            {
+                compra_cancelada();
+            }
+            break;
+        case 2: //SILENCIADOR
+            price = 4000;
+            if (money >= price)
+            {
+                money -= price;
+                fprintf(fptr, "SILENCIADOR\n");
+                fclose(fptr);
+
+                printf("compra realizada com sucesso.");
+                sleep(2);
+                main();
+            }
+            else // Caso nao tenha dinheiro suficiente
+            {
+                compra_cancelada();
+            } 
+            break;
+
+        case 3: //VISAO NOTURNA
+            price = 8000;
+            if (money >= price)
+            {
+                money -= price;
+                fprintf(fptr, "VISAO NOTURNA\n");
+                fclose(fptr);
+
+                printf("compra realizada com sucesso.");
+                sleep(2);
+                main();
+            }
+            else // Caso nao tenha dinheiro suficiente
+            {
+                compra_cancelada();
+            } 
+            break;
+
+        case 4: //CORONHA REFORCADA
+            price = 12000;
+            if (money >= price)
+            {
+                money -= price;
+                fprintf(fptr, "CORONHA REFORCADA\n");
+                fclose(fptr);
+
+                printf("compra realizada com sucesso.");
+                sleep(2);
+                main();
+            }
+            else // Caso nao tenha dinheiro suficiente
+            {
+                compra_cancelada();
+            } 
+            break;
+    }
+
+    fclose(fptr);
+}
+
 /*If the buy fail*/
 void compra_cancelada()
 {
@@ -279,12 +366,75 @@ void compra_cancelada()
     main();
 }
 
-
+/*EQUIPMENTS STORE*/
 void loja_equip()
 {
-    printf("AAAA");
-}
-void jornada()
-{
-    printf("AAAA");
+    system("cls");
+    // TITLE BAR
+    printf("LOJA DE EQUIPAMENTOS\t\tDINHEIRO: %.lf\n", money);
+    printf("----------------------------------\n");
+
+    /*STORE OPTIONS*/
+    int op_store = 0;
+
+    printf("EQUIPAMENTOS:\n");
+    printf("1. MIRA 2X\n");
+    printf("2. SILENCIADOR\n");
+    printf("3. VISAO NOTURNA \n");
+    printf("4. CORONHA REFORCADA\n");
+    scanf("%d", &op_store);
+
+    switch (op_store)
+    {
+        case 1: // MIRA 2X
+            system("cls");
+            printf("MIRA 2X\n"); // Title
+            printf("----------\n"); // Title Bar
+            printf("VALOR: $2.900\n"); // Price
+
+                printf("AUMENTA A CHANCE DE ACERTAR O DISPARO. DIFICULDADE: MEDIO\n"); // Description
+            printf("--------------------------------\n"); // spacer
+            printf("Voce gostaria de adquirir? (1. s/2. n)\n");
+            op_buy();
+            equip_money_verifier(1);
+            break;
+        case 2: // SILENCIADOR 
+            system("cls");
+            printf("SILENCIADOR\n"); // Title
+            printf("----------\n"); // Title Bar
+            printf("VALOR: $4000\n"); // Price
+
+                printf("DIMINUI A CHANCE DE OUVIREM O DISPARO. DIFICULDADE: ALTA\n"); // Description
+            printf("--------------------------------\n"); // spacer
+            printf("Voce gostaria de adquirir? (1. s/2. n)\n");
+            op_buy();
+            equip_money_verifier(2);
+            break;
+        case 3:// VISAO NOTURNA
+            system("cls");
+            printf("VISAO NOTURNA\n"); // Title
+            printf("----------\n"); // Title Bar
+            printf("VALOR: $8000\n"); // Price
+
+            printf("AUMENTA DRASTICAMENTE A PROBABILIDADE DE ACERTAR ALVOS A NOITE. DIFICULDADE: ALTA\n"); // Description
+            printf("--------------------------------\n"); // spacer
+            printf("Voce gostaria de adquirir? (1. s/2. n)\n");
+            op_buy();
+            equip_money_verifier(3);
+            break;
+        case 4: // CORONHA REFORCADA
+            system("cls");
+            printf("CORONHA REFORCADA\n"); // Title
+            printf("----------\n"); // Title Bar
+            printf("VALOR: $12000\n"); // Price
+
+            printf("AUMENTA DRASTICAMENTE A CHANCE DE ACERTAR O ALVO . DIFICULDADE: ALTA\n"); // Description
+            printf("--------------------------------\n"); // spacer
+            printf("Voce gostaria de adquirir? (1. s/2. n)\n");
+            op_buy();
+            equip_money_verifier(4);
+            break;
+
+
+    }
 }
